@@ -70,6 +70,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.endsWith('a')" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.endsWith('a')",
+            errors: ["ES2015 'String.prototype.endsWith' method is forbidden."],
+        },
         {
             filename,
             code: "'foo'.endsWith('a')",

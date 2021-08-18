@@ -16,3 +16,6 @@ overrides:
       "@mysticatea/eslint-plugin/require-meta-docs-url":
         - error
         - pattern: http://mysticatea.github.io/eslint-plugin-es/rules/{{name}}.html
+  - files: lib/**/*.js
+    rules:
+      "complexity": 0

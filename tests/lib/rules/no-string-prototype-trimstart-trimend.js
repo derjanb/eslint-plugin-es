@@ -104,6 +104,14 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.trimStart(2)" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.trimStart(2)",
+            errors: [
+                "ES2019 'String.prototype.trimStart' method is forbidden.",
+            ],
+        },
         {
             filename,
             code: "'foo'.trimStart(2)",

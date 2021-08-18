@@ -63,11 +63,18 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
             code: "foo.charAt(0)",
             settings: { es: { aggressive: true } },
         },
-
         // `String` is unknown type if tsconfig.json is not configured.
         "let foo = String(); foo.codePointAt(0)",
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.codePointAt(0)",
+            errors: [
+                "ES2015 'String.prototype.codePointAt' method is forbidden.",
+            ],
+        },
         {
             code: "let foo = ''; foo.codePointAt(0)",
             errors: [

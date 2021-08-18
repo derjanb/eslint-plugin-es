@@ -67,7 +67,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
 
         // `Array` is unknown type if tsconfig.json is not configured.
-        { filename, code: "let foo = []; foo.copyWithin(0, 1, 2)" },
         { filename, code: "let foo = Array(); foo.copyWithin(0, 1, 2)" },
         {
             filename,
@@ -80,6 +79,14 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
     ],
     invalid: [
+        // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway
+        {
+            filename,
+            code: "let foo = []; foo.copyWithin(0, 1, 2)",
+            errors: [
+                "ES2015 'Array.prototype.copyWithin' method is forbidden.",
+            ],
+        },
         {
             filename,
             code: "[a, b, c].copyWithin(0, 1, 2)",

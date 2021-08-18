@@ -79,7 +79,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
 
         // `Array` is unknown type if tsconfig.json is not configured.
-        { filename, code: "let foo = []; foo.includes(0)" },
         { filename, code: "let foo = Array(); foo.includes(0)" },
         {
             filename,
@@ -92,6 +91,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
     ],
     invalid: [
+        // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = []; foo.includes(0)",
+            errors: ["ES2016 'Array.prototype.includes' method is forbidden."],
+        },
         {
             filename,
             code: "[a, b, c].includes(0)",

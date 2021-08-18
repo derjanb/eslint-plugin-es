@@ -70,6 +70,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.repeat(3)" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.repeat(3)",
+            errors: ["ES2015 'String.prototype.repeat' method is forbidden."],
+        },
         {
             filename,
             code: "'foo'.repeat(3)",

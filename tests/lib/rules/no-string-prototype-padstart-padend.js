@@ -82,6 +82,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.padStart(2)" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.padStart(2)",
+            errors: ["ES2017 'String.prototype.padStart' method is forbidden."],
+        },
         {
             filename,
             code: "'foo'.padStart(2)",

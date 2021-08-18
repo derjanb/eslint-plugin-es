@@ -70,6 +70,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.matchAll('a')" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.matchAll('a')",
+            errors: ["ES2020 'String.prototype.matchAll' method is forbidden."],
+        },
         {
             filename,
             code: "'foo'.matchAll('a')",

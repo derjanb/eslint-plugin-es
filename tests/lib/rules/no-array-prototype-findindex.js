@@ -63,7 +63,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
 
         // `Array` is unknown type if tsconfig.json is not configured.
-        { filename, code: "let foo = []; foo.findIndex(() => {})" },
         { filename, code: "let foo = Array(); foo.findIndex(() => {})" },
         {
             filename,
@@ -76,6 +75,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
     ],
     invalid: [
+        // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = []; foo.findIndex(() => {})",
+            errors: ["ES2015 'Array.prototype.findIndex' method is forbidden."],
+        },
         {
             filename,
             code: "[a, b, c].findIndex(() => {})",

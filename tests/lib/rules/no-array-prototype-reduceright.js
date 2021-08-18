@@ -66,7 +66,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
 
         // `Array` is unknown type if tsconfig.json is not configured.
-        { filename, code: "let foo = []; foo.reduceRight(() => {})" },
         { filename, code: "let foo = Array(); foo.reduceRight(() => {})" },
         {
             filename,
@@ -80,6 +79,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
     ],
     invalid: [
+        // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = []; foo.reduceRight(() => {})",
+            errors: ["ES5 'Array.prototype.reduceRight' method is forbidden."],
+        },
         {
             filename,
             code: "[a, b, c].reduceRight(() => {})",

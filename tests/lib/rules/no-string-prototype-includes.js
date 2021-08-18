@@ -79,6 +79,12 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         { filename, code: "let foo = String(); foo.includes('a')" },
     ],
     invalid: [
+        // `''` is unknown type if tsconfig.json is not configured, but we detect it anyway.
+        {
+            filename,
+            code: "let foo = ''; foo.includes('a')",
+            errors: ["ES2015 'String.prototype.includes' method is forbidden."],
+        },
         {
             filename,
             code: "'foo'.includes('a')",
