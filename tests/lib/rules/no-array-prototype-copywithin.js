@@ -67,7 +67,10 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         },
 
         // `Array` is unknown type if tsconfig.json is not configured.
-        { filename, code: "let foo = Array(); foo.copyWithin(0, 1, 2)" },
+        {
+            filename,
+            code: "let foo = Array(); foo.copyWithin(0, 1, 2)",
+        },
         {
             filename,
             code: "function f<T extends any[]>(a: T) { a.copyWithin(0, 1, 2) }",
