@@ -71,15 +71,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
             filename,
             code: "let foo = Array(); foo.copyWithin(0, 1, 2)",
         },
-        {
-            filename,
-            code: "function f<T extends any[]>(a: T) { a.copyWithin(0, 1, 2) }",
-        },
-        {
-            filename,
-            code:
-                "function f<T extends string[] | number[]>(a: T) { a.copyWithin(0, 1, 2) }",
-        },
     ],
     invalid: [
         // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway
@@ -93,6 +84,21 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         {
             filename,
             code: "[a, b, c].copyWithin(0, 1, 2)",
+            errors: [
+                "ES2015 'Array.prototype.copyWithin' method is forbidden.",
+            ],
+        },
+        {
+            filename,
+            code: "function f<T extends any[]>(a: T) { a.copyWithin(0, 1, 2) }",
+            errors: [
+                "ES2015 'Array.prototype.copyWithin' method is forbidden.",
+            ],
+        },
+        {
+            filename,
+            code:
+                "function f<T extends string[] | number[]>(a: T) { a.copyWithin(0, 1, 2) }",
             errors: [
                 "ES2015 'Array.prototype.copyWithin' method is forbidden.",
             ],

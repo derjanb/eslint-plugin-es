@@ -80,15 +80,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
 
         // `Array` is unknown type if tsconfig.json is not configured.
         { filename, code: "let foo = Array(); foo.flat(1)" },
-        {
-            filename,
-            code: "function f<T extends any[]>(a: T) { a.flat(1) }",
-        },
-        {
-            filename,
-            code:
-                "function f<T extends string[] | number[]>(a: T) { a.flat(1) }",
-        },
     ],
     invalid: [
         // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
@@ -106,6 +97,17 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
             filename,
             code: "[a, b, c].flatMap(() => {})",
             errors: ["ES2019 'Array.prototype.flatMap' method is forbidden."],
+        },
+        {
+            filename,
+            code: "function f<T extends any[]>(a: T) { a.flat(1) }",
+            errors: ["ES2019 'Array.prototype.flat' method is forbidden."],
+        },
+        {
+            filename,
+            code:
+                "function f<T extends string[] | number[]>(a: T) { a.flat(1) }",
+            errors: ["ES2019 'Array.prototype.flat' method is forbidden."],
         },
         {
             filename,

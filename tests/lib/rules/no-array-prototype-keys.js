@@ -64,15 +64,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
 
         // `Array` is unknown type if tsconfig.json is not configured.
         { filename, code: "let foo = Array(); foo.keys()" },
-        {
-            filename,
-            code: "function f<T extends any[]>(a: T) { a.keys() }",
-        },
-        {
-            filename,
-            code:
-                "function f<T extends string[] | number[]>(a: T) { a.keys() }",
-        },
     ],
     invalid: [
         // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
@@ -84,6 +75,17 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         {
             filename,
             code: "[a, b, c].keys()",
+            errors: ["ES2015 'Array.prototype.keys' method is forbidden."],
+        },
+        {
+            filename,
+            code: "function f<T extends any[]>(a: T) { a.keys() }",
+            errors: ["ES2015 'Array.prototype.keys' method is forbidden."],
+        },
+        {
+            filename,
+            code:
+                "function f<T extends string[] | number[]>(a: T) { a.keys() }",
             errors: ["ES2015 'Array.prototype.keys' method is forbidden."],
         },
         {

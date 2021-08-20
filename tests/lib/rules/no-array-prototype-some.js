@@ -64,15 +64,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
 
         // `Array` is unknown type if tsconfig.json is not configured.
         { filename, code: "let foo = Array(); foo.some(() => {})" },
-        {
-            filename,
-            code: "function f<T extends any[]>(a: T) { a.some(() => {}) }",
-        },
-        {
-            filename,
-            code:
-                "function f<T extends string[] | number[]>(a: T) { a.some(() => {}) }",
-        },
     ],
     invalid: [
         // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
@@ -84,6 +75,17 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         {
             filename,
             code: "[a, b, c].some(() => {})",
+            errors: ["ES5 'Array.prototype.some' method is forbidden."],
+        },
+        {
+            filename,
+            code: "function f<T extends any[]>(a: T) { a.some(() => {}) }",
+            errors: ["ES5 'Array.prototype.some' method is forbidden."],
+        },
+        {
+            filename,
+            code:
+                "function f<T extends string[] | number[]>(a: T) { a.some(() => {}) }",
             errors: ["ES5 'Array.prototype.some' method is forbidden."],
         },
         {

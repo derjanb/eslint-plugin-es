@@ -64,15 +64,6 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
 
         // `Array` is unknown type if tsconfig.json is not configured.
         { filename, code: "let foo = Array(); foo.forEach(() => {})" },
-        {
-            filename,
-            code: "function f<T extends any[]>(a: T) { a.forEach(() => {}) }",
-        },
-        {
-            filename,
-            code:
-                "function f<T extends string[] | number[]>(a: T) { a.forEach(() => {}) }",
-        },
     ],
     invalid: [
         // `Array` is unknown type if tsconfig.json is not configured, but we detect it anyway.
@@ -84,6 +75,17 @@ new RuleTester({ parser }).run(`${ruleId} TS`, rule, {
         {
             filename,
             code: "[a, b, c].forEach(() => {})",
+            errors: ["ES5 'Array.prototype.forEach' method is forbidden."],
+        },
+        {
+            filename,
+            code: "function f<T extends any[]>(a: T) { a.forEach(() => {}) }",
+            errors: ["ES5 'Array.prototype.forEach' method is forbidden."],
+        },
+        {
+            filename,
+            code:
+                "function f<T extends string[] | number[]>(a: T) { a.forEach(() => {}) }",
             errors: ["ES5 'Array.prototype.forEach' method is forbidden."],
         },
         {
